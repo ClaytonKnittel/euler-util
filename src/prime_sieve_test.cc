@@ -4,6 +4,8 @@
 
 #include "gtest/gtest.h"
 
+namespace math {
+
 static constexpr uint64_t kMaxPrime = 1000000;
 
 class TestPrimeSieve : public ::testing::Test {
@@ -94,3 +96,33 @@ TEST_F(TestPrimeSieve, TestPrimeBefore) {
     }
   }
 }
+
+TEST_F(TestPrimeSieve, TestPrimePi) {
+  PrimeSieve sieve(kMaxPrime);
+
+  uint64_t num_primes = 0;
+  for (uint64_t i = 0; i < kMaxPrime; i++) {
+    if (sieve.IsPrime(i)) {
+      num_primes++;
+    }
+
+    EXPECT_LE(PrimeSieve::PrimePiLB(i), num_primes);
+    EXPECT_GE(PrimeSieve::PrimePiUB(i), num_primes);
+  }
+}
+
+TEST_F(TestPrimeSieve, TestPrimePiInv) {
+  PrimeSieve sieve(kMaxPrime);
+
+  uint64_t num_primes = 0;
+  for (uint64_t i = 1; i < kMaxPrime; i++) {
+    if (sieve.IsPrime(i)) {
+      num_primes++;
+    }
+
+    EXPECT_LE(PrimeSieve::PrimePiInvLB(num_primes), i);
+    EXPECT_GE(PrimeSieve::PrimePiInvUB(num_primes), i);
+  }
+}
+
+}  // namespace math

@@ -4,8 +4,30 @@
 #include <cstdint>
 #include <vector>
 
+namespace math {
+
 class PrimeSieve {
  public:
+  // Lower bound for the ordinal of prime `p`, i.e. the count of primes `<= p`.
+  //
+  // PrimePi(2) <= 1
+  // PrimePi(3) <= 2
+  static uint64_t PrimePiLB(uint64_t p);
+
+  // Upper bound for the ordinal of prime `p`, i.e. the count of primes `<= p`.
+  //
+  // PrimePi(2) >= 1
+  // PrimePi(3) >= 2
+  static uint64_t PrimePiUB(uint64_t p);
+
+  // Inverse of `PrimePiUB()`, i.e. a lower bound on the prime with ordinal
+  // `idx`. The returned number is not guaranteed to be prime.
+  static uint64_t PrimePiInvLB(uint64_t idx);
+
+  // Inverse of `PrimePiLB()`, i.e. an upper bound on the prime with ordinal
+  // `idx`. The returned number is not guaranteed to be prime.
+  static uint64_t PrimePiInvUB(uint64_t idx);
+
   explicit PrimeSieve(uint64_t max_prime) : primes_(VectorSize(max_prime)) {
     Initialize();
   }
@@ -40,3 +62,5 @@ class PrimeSieve {
 
   std::vector<std::pair<uint64_t, uint64_t>> primes_;
 };
+
+}  // namespace math

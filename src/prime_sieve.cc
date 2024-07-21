@@ -1,8 +1,108 @@
 #include "src/prime_sieve.h"
 
 #include <bit>
+#include <cmath>
 #include <cstddef>
 #include <cstdint>
+
+namespace math {
+
+/* static */
+uint64_t PrimeSieve::PrimePiLB(uint64_t p) {
+  switch (p) {
+    case 0:
+    case 1:
+      return 0;
+    case 2:
+      return 1;
+    case 3:
+    case 4:
+      return 2;
+    case 5:
+    case 6:
+      return 3;
+    case 7:
+    case 8:
+    case 9:
+    case 10:
+      return 4;
+    default:
+      break;
+  }
+  double x = p;
+  double log_x = std::log(x);
+
+  if (p < 59) {
+    return static_cast<uint64_t>(std::floor(x / log_x));
+  }
+
+  return static_cast<uint64_t>(
+      std::floor(x / log_x * (1. + 1. / (2. * log_x))));
+}
+
+/* static */
+uint64_t PrimeSieve::PrimePiUB(uint64_t p) {
+  switch (p) {
+    case 0:
+    case 1:
+      return 0;
+    case 2:
+      return 1;
+    case 3:
+    case 4:
+      return 2;
+    default:
+      break;
+  }
+  double x = p;
+  double log_x = std::log(x);
+  return static_cast<uint64_t>(
+      std::floor(x / log_x * (1. + 3. / (2. * log_x))));
+}
+
+/* static */
+uint64_t PrimeSieve::PrimePiInvLB(uint64_t idx) {
+  uint64_t h = 1;
+  while (PrimePiUB(2 * h) < idx) {
+    h *= 2;
+  }
+
+  // l is inclusive, h is exclusive.
+  uint64_t l = h;
+  h = 2 * h;
+  while (l + 1 < h) {
+    uint64_t m = (l + h) / 2;
+    if (PrimePiUB(m) < idx) {
+      l = m;
+    } else {
+      h = m;
+    }
+  }
+
+  return l;
+}
+
+/* static */
+uint64_t PrimeSieve::PrimePiInvUB(uint64_t idx) {
+  uint64_t h = 1;
+  while (PrimePiLB(h) <= idx) {
+    h *= 2;
+  }
+
+  // l is exclusive, h is inclusive.
+  uint64_t l = h;
+  h = 2 * h;
+  while (l + 1 < h) {
+    uint64_t m = (l + h) / 2;
+    if (PrimePiLB(m) <= idx) {
+      l = m;
+    } else {
+      h = m;
+    }
+  }
+
+  return h;
+}
 
 bool PrimeSieve::IsPrime(uint64_t n) const {
   size_t idx = n / kVSize;
@@ -80,3 +180,5 @@ void PrimeSieve::ClearMultiples(uint64_t p) {
     primes_[x / kVSize].second = mask & ~(UINT64_C(1) << (x % kVSize));
   }
 }
+
+}  // namespace math
