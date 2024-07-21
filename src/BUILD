@@ -2,8 +2,9 @@ cc_library(
     name = "prime_sieve",
     srcs = ["prime_sieve.cc"],
     hdrs = ["prime_sieve.h"],
+    visibility = ["//visibility:public"],
     deps = [
-      "@googletest//:gtest",
+        "@googletest//:gtest",
     ],
 )
 
