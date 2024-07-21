@@ -40,6 +40,10 @@ class PrimeSieve {
   // primes. I.e. `NthPrime(num_primes)` will always exist.
   static PrimeSieve WithPrimeCount(uint64_t num_primes);
 
+  PrimeSieve(const PrimeSieve&) = delete;
+
+  PrimeSieve& operator=(const PrimeSieve&) = delete;
+
   bool IsPrime(uint64_t n) const;
 
   size_t PrimeIdx(uint64_t p) const;
