@@ -1,4 +1,4 @@
-#include "src/prime_sieve.h"
+#include "euler-util/prime_sieve.h"
 
 #include <bit>
 #include <cmath>
