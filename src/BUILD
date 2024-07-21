@@ -3,6 +3,7 @@ cc_library(
     srcs = ["prime_sieve.cc"],
     hdrs = ["prime_sieve.h"],
     deps = [
+      "@googletest//:gtest",
     ],
 )
 

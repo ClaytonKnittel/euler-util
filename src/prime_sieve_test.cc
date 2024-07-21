@@ -24,15 +24,22 @@ class TestPrimeSieve : public ::testing::Test {
 };
 
 TEST_F(TestPrimeSieve, TestIsPrime) {
-  PrimeSieve sieve(kMaxPrime);
+  PrimeSieve sieve = PrimeSieve::WithMaxPrime(kMaxPrime);
 
   for (uint64_t i = 0; i < kMaxPrime; i++) {
     EXPECT_EQ(sieve.IsPrime(i), IsPrimeNaive(i));
   }
 }
 
+TEST_F(TestPrimeSieve, TestWithNumPrimes) {
+  for (uint64_t num_primes = 1; num_primes <= 64; num_primes++) {
+    PrimeSieve sieve = PrimeSieve::WithPrimeCount(num_primes);
+    EXPECT_GE(sieve.NumPrimes(), num_primes);
+  }
+}
+
 TEST_F(TestPrimeSieve, TestIdx) {
-  PrimeSieve sieve(kMaxPrime);
+  PrimeSieve sieve = PrimeSieve::WithMaxPrime(kMaxPrime);
 
   uint64_t num_primes = 0;
   for (uint64_t i = 0; i < kMaxPrime; i++) {
@@ -44,7 +51,7 @@ TEST_F(TestPrimeSieve, TestIdx) {
 }
 
 TEST_F(TestPrimeSieve, TestNthPrime) {
-  PrimeSieve sieve(kMaxPrime);
+  PrimeSieve sieve = PrimeSieve::WithMaxPrime(kMaxPrime);
 
   uint64_t num_primes = 0;
   for (uint64_t i = 0; i < kMaxPrime; i++) {
@@ -53,13 +60,15 @@ TEST_F(TestPrimeSieve, TestNthPrime) {
       num_primes++;
     }
   }
+
+  EXPECT_EQ(sieve.NumPrimes(), num_primes);
 }
 
 TEST_F(TestPrimeSieve, TestLargestPrimeBelow) {
-  PrimeSieve sieve(64);
+  PrimeSieve sieve = PrimeSieve::WithMaxPrime(kMaxPrime);
 
   uint64_t prev_prime = 0;
-  for (uint64_t i = 0; i < 64; i++) {
+  for (uint64_t i = 0; i < kMaxPrime; i++) {
     if (sieve.IsPrime(i)) {
       prev_prime = i;
     }
@@ -70,7 +79,7 @@ TEST_F(TestPrimeSieve, TestLargestPrimeBelow) {
 }
 
 TEST_F(TestPrimeSieve, TestPrimeAfter) {
-  PrimeSieve sieve(kMaxPrime);
+  PrimeSieve sieve = PrimeSieve::WithMaxPrime(kMaxPrime);
 
   uint64_t prev_prime = 0;
   for (uint64_t i = 0; i < kMaxPrime; i++) {
@@ -84,7 +93,7 @@ TEST_F(TestPrimeSieve, TestPrimeAfter) {
 }
 
 TEST_F(TestPrimeSieve, TestPrimeBefore) {
-  PrimeSieve sieve(kMaxPrime);
+  PrimeSieve sieve = PrimeSieve::WithMaxPrime(kMaxPrime);
 
   uint64_t prev_prime = 0;
   for (uint64_t i = 0; i < kMaxPrime; i++) {
@@ -98,7 +107,7 @@ TEST_F(TestPrimeSieve, TestPrimeBefore) {
 }
 
 TEST_F(TestPrimeSieve, TestPrimePi) {
-  PrimeSieve sieve(kMaxPrime);
+  PrimeSieve sieve = PrimeSieve::WithMaxPrime(kMaxPrime);
 
   uint64_t num_primes = 0;
   for (uint64_t i = 0; i < kMaxPrime; i++) {
@@ -112,7 +121,7 @@ TEST_F(TestPrimeSieve, TestPrimePi) {
 }
 
 TEST_F(TestPrimeSieve, TestPrimePiInv) {
-  PrimeSieve sieve(kMaxPrime);
+  PrimeSieve sieve = PrimeSieve::WithMaxPrime(kMaxPrime);
 
   uint64_t num_primes = 0;
   for (uint64_t i = 1; i < kMaxPrime; i++) {

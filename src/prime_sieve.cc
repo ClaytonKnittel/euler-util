@@ -104,6 +104,16 @@ uint64_t PrimeSieve::PrimePiInvUB(uint64_t idx) {
   return h;
 }
 
+/*static */
+PrimeSieve PrimeSieve::WithMaxPrime(uint64_t max_prime) {
+  return PrimeSieve(max_prime);
+}
+
+/* static */
+PrimeSieve PrimeSieve::WithPrimeCount(uint64_t num_primes) {
+  return PrimeSieve(PrimePiInvUB(num_primes));
+}
+
 bool PrimeSieve::IsPrime(uint64_t n) const {
   size_t idx = n / kVSize;
   uint32_t offset = n % kVSize;
@@ -143,12 +153,16 @@ uint64_t PrimeSieve::LargestPrimeBelow(uint64_t n) const {
   return NthPrime(PrimeIdx(n));
 }
 
-size_t PrimeSieve::PrimeAfter(uint64_t p) const {
+uint64_t PrimeSieve::PrimeAfter(uint64_t p) const {
   return NthPrime(PrimeIdx(p) + 1);
 }
 
-size_t PrimeSieve::PrimeBefore(uint64_t p) const {
+uint64_t PrimeSieve::PrimeBefore(uint64_t p) const {
   return NthPrime(PrimeIdx(p) - 1);
+}
+
+uint64_t PrimeSieve::NumPrimes() const {
+  return primes_.back().first + std::popcount(primes_.back().second);
 }
 
 void PrimeSieve::Initialize() {
